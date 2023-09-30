@@ -1,7 +1,10 @@
 from django.db import models
+from django.db.models import SET_NULL, CASCADE
+from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import Page
-from wagtail.images.blocks import ImageChooserBlock
+from wagtail.snippets.models import register_snippet
+from taggit.models import Tag as TaggitTag
 
 
 class BlogPage(Page):
@@ -13,8 +16,38 @@ class BlogPage(Page):
 
 
 class PostPage(Page):
-    header_image = models.ForeignKey("wagtailimages.Image", on_delete=models.SET_NULL, null=True, blank=True, related_name="+")
+    header_image = models.ForeignKey("wagtailimages.Image", on_delete=models.SET_NULL, null=True, blank=True,
+                                     related_name="+")
 
     content_panels = Page.content_panels + [
         FieldPanel("header_image"),
     ]
+
+
+class PostPageBlogCategory(models.Model):
+    page = ParentalKey("blog.PostPage", on_delete=CASCADE, blank=True, related_name="categories")
+    blog_category = models.ForeignKey("BlogCategory", on_delete=models.CASCADE, blank=True, related_name="post_pages")
+
+
+@register_snippet
+class BlogCategory(models.Model):
+    name = models.CharField(max_length=255, blank=True)
+    slug = models.SlugField(max_length=255, unique=True)
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("slug"),
+    ]
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
+
+@register_snippet
+class Tag(TaggitTag):
+    class Meta:
+        proxy = True
