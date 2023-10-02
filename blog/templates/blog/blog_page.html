@@ -1,7 +1,14 @@
-<h1>
-    Home page from blog!
-</h1>
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
 
-<p>
-    {{ self.description }}
-</p>
+{% block content %}
+    <div>
+        {% for post in page.get_children.specific %}
+            <span>{{ post.tags }}</span>
+            <p>{{ post.last_published_at }}</p>
+            <div>
+                {% image post.header_image fill-300x220 %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags wagtailimages_tags %}
+
+{% block content %}
+    <div>
+        {% for tag in tags %}
+            <ul>
+                <li>{{ tag }}</li>
+            </ul>
+        {% endfor %}
+    </div>
+    <div>
+        {% image self.header_image fill-300x300 %}
+    </div>
+    <div></div>
+{% endblock content %}
+
+
+<div>
+    <h1>
+        {{ self.title }}
+    </h1>
+    <p>
+        {{ self.description }}
+    </p>
+</div>
