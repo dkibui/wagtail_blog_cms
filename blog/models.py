@@ -18,8 +18,13 @@ class BlogPage(Page):
 
 
 class PostPage(Page):
-    header_image = models.ForeignKey("wagtailimages.Image", on_delete=SET_NULL, null=True, blank=True,
-                                     related_name="+")
+    header_image = models.ForeignKey(
+        "wagtailimages.Image",
+        on_delete=SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
     tags = TaggableManager(through="PostPageTags", blank=True)
 
     content_panels = Page.content_panels + [
@@ -30,15 +35,22 @@ class PostPage(Page):
 
 
 class PostPageBlogCategory(models.Model):
-    page = ParentalKey("blog.PostPage", on_delete=CASCADE, blank=True, related_name="categories")
-    blog_category = models.ForeignKey("BlogCategory", on_delete=CASCADE, blank=True, related_name="post_pages")
+    page = ParentalKey(
+        "blog.PostPage", on_delete=CASCADE, blank=True, related_name="categories"
+    )
+    blog_category = models.ForeignKey(
+        "BlogCategory", on_delete=CASCADE, blank=True, related_name="post_pages"
+    )
 
     panels = [
         FieldPanel("blog_category"),
     ]
 
     class Meta:
-        unique_together = ("page", "blog_category",)
+        unique_together = (
+            "page",
+            "blog_category",
+        )
 
 
 class PostPageTags(TaggedItemBase):

@@ -1,16 +1,16 @@
 from django.db import models
-from wagtail.models import Page
 from wagtail.fields import RichTextField
+from wagtail.models import Page
 
 
 class HomePage(Page):
-    title = models.TextField()
-    body = RichTextField()
+    name = models.TextField(blank=True)
+    body = RichTextField(blank=True)
     date = models.DateField("Post date")
     feed_image = models.ForeignKey(
-        'wagtailimages.Image',
+        "wagtailimages.Image",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+",
     )
