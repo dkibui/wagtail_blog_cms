@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="homepage",
             name="date",
-            field=models.DateField(default="Default", verbose_name="Post date"),
+            field=models.DateField(default="2023-09-05", verbose_name="Post date"),
             preserve_default=False,
         ),
         migrations.AddField(

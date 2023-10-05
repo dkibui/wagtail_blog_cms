@@ -7,6 +7,9 @@ from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.models import Page
 from wagtail.snippets.models import register_snippet
+from wagtail.fields import StreamField
+
+from .blocks import BodyBlock
 
 
 class BlogPage(Page):
@@ -26,11 +29,13 @@ class PostPage(Page):
         related_name="+",
     )
     tags = TaggableManager(through="PostPageTags", blank=True)
+    body = StreamField(BodyBlock, use_json_field=True, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("header_image"),
         FieldPanel("tags"),
         InlinePanel("categories", label="category"),
+        FieldPanel("body"),
     ]
 
 
